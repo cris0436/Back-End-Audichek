@@ -1,9 +1,12 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from models.Person import Person
+from database.Conections import Base
 
-Base = declarative_base()
 class Admin(Person):
     __tablename__ = 'admins'
-    id = Column(Integer, primary_key=True, index=True)
+
+    id = Column(Integer, ForeignKey('persons.id'), primary_key=True)  # Reutiliza la clave primaria de Person
     notes = Column(String(100), nullable=True)
+
+    person = relationship("Person", back_populates="admin")

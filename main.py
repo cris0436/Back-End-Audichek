@@ -1,7 +1,7 @@
-import models
+from database.Conections import engine, Base
+from models import *
+from models import User
 
-def main():
-    newPatient = models.User("John Doe", 30, "123 Main St", "Flu")
+Base.metadata.create_all(bind=engine)
 
-if __name__ == "__main__":
-    main()
+print("Las tablas han sido creadas correctamente en la base de datos.")

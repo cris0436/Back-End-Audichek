@@ -1,14 +1,15 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import declared_attr
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from models.Person import Person
+from database.Conections import Base
 
-Base = declarative_base()
-
-class Usuario(Person):
+class User(Person):
     __tablename__ = 'users'
-    id = Column(String(10), primary_key=True, index=True)
-    username = Column(String, unique=True, nullable=False)
-    password = Column(String, nullable=False)
-    rol = Column(String, nullable=False)  # 'admin' o 'patient'
-    
+
+    id = Column(Integer, ForeignKey('persons.id'), primary_key=True)
+    username = Column(String(100), unique=True, nullable=False)  # Especificar longitud para `username`
+    password = Column(String(255), nullable=False)  # Especificar longitud para `password`
+    rol = Column(String(50), nullable=False)  # Especificar longitud para `rol`
+
+    person = relationship("Person", back_populates="user")
+    audiometries = relationship("Audiometry", back_populates="user")

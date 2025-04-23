@@ -1,8 +1,6 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import declared_attr
-from models.Person import Person
-Base = declarative_base()
+from database.Conections import Base
+
 
 class Rol(Base):
     __tablename__ = 'rols'
