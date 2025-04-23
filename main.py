@@ -1,7 +1,7 @@
 import models
-test
+
 def main():
-    persona= models.Patient()
-    print(persona.Backgound)
-if (__name__ == main()):
+    newPatient = models.User("John Doe", 30, "123 Main St", "Flu")
+
+if __name__ == "__main__":
     main()
