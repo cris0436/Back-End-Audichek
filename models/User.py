@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from models.Person import Person
-from database.Conections import Base
+from database.connections import Base
 
 class User(Person):
     __tablename__ = 'users'
