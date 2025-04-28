@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from database.connections import Base
 
+
 class Person(Base):
     __tablename__ = 'persons'
 

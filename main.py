@@ -15,4 +15,5 @@ app.include_router(user_router)
 def read_root():
     return {"message": "API funcionando correctamente 🚀"}
 
+
 print("Las tablas han sido creadas correctamente en la base de datos.")
