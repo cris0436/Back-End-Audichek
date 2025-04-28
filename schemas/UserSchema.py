@@ -7,6 +7,8 @@ class PersonData(BaseModel):
     email: str = None
     role: str = None
     birth_date: date = None
+    class Config:
+        from_attributes = True
 
 
 # Esquema de creación de usuario
@@ -30,4 +32,6 @@ class UserOut(BaseModel):
     id: int
     username: str
     person: PersonData  # Relación con la persona
+    class Config:
+        from_attributes = True
 
