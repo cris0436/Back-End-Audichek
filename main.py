@@ -1,4 +1,4 @@
-from database.Conections import engine, Base
+from database.Connections import engine, Base
 from models import *
 from models import User
 
