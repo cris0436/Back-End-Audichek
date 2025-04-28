@@ -39,7 +39,8 @@ def create_user(db: Session, user_data: UserCreate):
         new_user = User(
             username=user_data.username,
             password=user_data.password,
-            person_id=new_person.id  # Asociar el usuario con la persona
+            person_id=new_person.id ,
+            ocupation=user_data.ocupation  # Asignar la ocupación como el rol
         )
         db.add(new_user)
         db.commit()
@@ -49,9 +50,11 @@ def create_user(db: Session, user_data: UserCreate):
         return {
             "id": new_user.id,
             "username": new_user.username,
+            "ocupation": new_user.ocupation,
             "person": {
                 "name": new_person.name,
                 "email": new_person.email,
+                "ocupation": new_user.ocupation,
                 "role": rol.name,  # Incluye el nombre del rol
                 "birth_date": new_person.birth_date
             }

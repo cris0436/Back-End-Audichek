@@ -2,6 +2,11 @@ from fastapi import FastAPI
 from database.connections import engine, Base
 from models import *
 from routers.user_routes import router as user_router  # Importamos el router
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
 
 app = FastAPI()
 

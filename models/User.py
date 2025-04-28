@@ -9,6 +9,7 @@ class User(Base):
     person_id = Column(Integer, ForeignKey('persons.id'))  # Relación con Person
     username = Column(String(100), unique=True, nullable=False)
     password = Column(String(255), nullable=False)
+    ocupation = Column(String(100), nullable=True)
 
     person = relationship("Person", back_populates="users")  # Relación inversa
     audiometries = relationship("Audiometry", back_populates="user")  # Relación uno-a-muchos con Audiometry

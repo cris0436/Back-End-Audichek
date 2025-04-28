@@ -21,8 +21,8 @@ class UserCreate(BaseModel):
     birth_date: date
     username: str
     password: str
-    rol: str  # El nombre del rol que se asignará al usuario
-
+    rol: str = None # El nombre del rol que se asignará al usuario
+    ocupation: str = None  # Ocupación del usuario (puede ser el rol o cualquier otra cosa)
     class Config:
         orm_mode = True
 
@@ -31,7 +31,8 @@ class UserCreate(BaseModel):
 class UserOut(BaseModel):
     id: int
     username: str
-    person: PersonData  # Relación con la persona
+    ocupation: str = None   
+    person: PersonData 
     class Config:
         from_attributes = True
 
