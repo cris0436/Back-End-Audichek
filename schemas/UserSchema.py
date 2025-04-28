@@ -1,5 +1,10 @@
 from pydantic import BaseModel
 from datetime import date
+class AuthUser(BaseModel):
+    username: str
+    password: str
+    class Config:
+        from_attributes = True
 
 # Nuevo esquema para la persona relacionada
 class PersonData(BaseModel):

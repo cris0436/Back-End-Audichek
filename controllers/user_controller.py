@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from models import Person
 from models.User import User
 from models.Admin import Admin
-from schemas.UserSchema import UserCreate
+from schemas.UserSchema import AuthUser, UserCreate
 from sqlalchemy.exc import IntegrityError
 from exceptions.db_exceptions import handle_integrity_error  # <-- asegúrate de que esto exista
 from fastapi import HTTPException
@@ -68,6 +68,23 @@ def create_user(db: Session, user_data: UserCreate):
         db.rollback()
         print(f"Otro error: {e}")
         raise HTTPException(status_code=500, detail=f"Error inesperado al crear el usuario: {e}")
+
+def user_auth(db: Session, user_data: AuthUser):
+    # Verificar si el usuario existe
+    user = db.query(User).filter(User.username == user_data.username).first()
+    if not user or user.password != user_data.password:
+        # Lanzar un error específico cuando las credenciales son incorrectas
+        raise HTTPException(status_code=400, detail="Credenciales incorrectas")
+
+    try:
+        # Si el usuario existe y la contraseña coincide, retornar el usuario
+        return user
+    except IntegrityError as e:
+        print(f"Error de integridad: {e}")
+        raise HTTPException(status_code=400, detail=f"Error de integridad: {e}")
+    except Exception as e:
+        print(f"Error inesperado al autenticar el usuario: {e}")
+        raise HTTPException(status_code=500, detail="Error inesperado al autenticar el usuario")
 
 # Obtener un usuario por ID
 def get_user(db: Session, user_id: int):

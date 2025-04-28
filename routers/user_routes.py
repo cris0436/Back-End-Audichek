@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database.DatabaseSession import DataBaseSession
 from controllers import user_controller
-from schemas.UserSchema import UserCreate, UserOut
+from schemas.UserSchema import AuthUser, UserCreate, UserOut
 
 # Instancia de la sesión de base de datos
 db_session = DataBaseSession()
@@ -17,6 +17,11 @@ router = APIRouter(
 @router.post("/", response_model=UserOut)
 def create_user(user: UserCreate, db: Session = Depends(db_session.get_db)):
     return user_controller.create_user(db, user)
+
+# Auth user
+@router.post("/auth", response_model=UserOut)
+def create_user(user: AuthUser, db: Session = Depends(db_session.get_db)):
+    return user_controller.user_auth(db, user)
 
 # Obtener un usuario por ID
 @router.get("/{user_id}", response_model=UserOut)
