@@ -1,47 +1,69 @@
 from sqlalchemy.orm import Session
+from models import Person
 from models.User import User
-from models.Person import Person
+from models.Admin import Admin
 from schemas.UserSchema import UserCreate
 from sqlalchemy.exc import IntegrityError
 from exceptions.db_exceptions import handle_integrity_error  # <-- asegúrate de que esto exista
 from fastapi import HTTPException
 
-# Crear un usuario
+from models.Rol import Rol  # <- Importamos el modelo Rol
+
 def create_user(db: Session, user_data: UserCreate):
     try:
-        # Crear primero la persona
+        # Verificar si el rol existe
+        rol = db.query(Rol).filter(Rol.name == user_data.rol).first()
+        if not rol:
+            # Si el rol no existe, lo creamos
+            new_rol = Rol(
+                name=user_data.rol,
+                description=user_data.rol  # Puedes ajustar la descripción según lo necesario
+            )
+            db.add(new_rol)
+            db.commit()
+            db.refresh(new_rol)
+            rol = new_rol
+
+        # Crear la nueva persona y asociar el rol
         new_person = Person(
             name=user_data.name,
             email=user_data.email,
-            role=user_data.role,
+            rol_id=rol.id,  # Asociar el rol con la persona
             birth_date=user_data.birth_date
         )
         db.add(new_person)
         db.commit()
         db.refresh(new_person)
-        print(f"Persona creada con ID: {new_person.id}")  # Añadimos un print para verificar
 
-        # Luego crear el usuario (ligado a la persona)
+        # Crear el nuevo usuario y asociarlo a la persona
         new_user = User(
-            id=new_person.id,
             username=user_data.username,
             password=user_data.password,
-            rol=user_data.rol
+            person_id=new_person.id  # Asociar el usuario con la persona
         )
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-        print(f"Usuario creado con ID: {new_user.id}")  # Añadimos otro print
 
-        return new_user
+        # Retornar el usuario creado
+        return {
+            "id": new_user.id,
+            "username": new_user.username,
+            "person": {
+                "name": new_person.name,
+                "email": new_person.email,
+                "role": rol.name,  # Incluye el nombre del rol
+                "birth_date": new_person.birth_date
+            }
+        }
 
     except IntegrityError as e:
         db.rollback()
-        print(f"Error de integridad: {e}")  # Imprimimos el error para ver los detalles
-        handle_integrity_error(e)
+        print(f"Error de integridad: {e}")
+        raise HTTPException(status_code=400, detail="Error de integridad: este usuario ya existe.")
     except Exception as e:
         db.rollback()
-        print(f"Otro error: {e}") # Capturamos otros errores para ver qué sucede
+        print(f"Otro error: {e}")
         raise HTTPException(status_code=500, detail=f"Error inesperado al crear el usuario: {e}")
 
 # Obtener un usuario por ID
@@ -50,9 +72,13 @@ def get_user(db: Session, user_id: int):
 
 # Obtener todos los usuarios
 def get_all_users(db: Session):
-    return db.query(User).all()
-
+    try:
+        return db.query(User).all()
+    except Exception as e:
+        print(f"Error al obtener usuarios: {e}")
+        raise HTTPException(status_code=500, detail="Error inesperado al obtener los usuarios")
 # Actualizar un usuario
+
 def update_user(db: Session, user_id: int, updated_data: dict):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
