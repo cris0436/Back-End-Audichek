@@ -1,13 +1,12 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from database.Conections import SessionLocal
-from models import Usuario
+from database.connections import SessionLocal
+from models import User
 
-class DataBaseSession(): # Asegúrate de importar el modelo correctamente
-    
+class DataBaseSession():
     def get_db(self):
         db = SessionLocal()
         try:
-            yield self.db
+            yield db
         finally:
-           self.db.close()
+            db.close()

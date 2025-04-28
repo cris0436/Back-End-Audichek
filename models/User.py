@@ -1,15 +1,14 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.Person import Person
-from database.Conections import Base
+from database.connections import Base
 
-class User(Person):
+class User(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, ForeignKey('persons.id'), primary_key=True)
-    username = Column(String(100), unique=True, nullable=False)  # Especificar longitud para `username`
-    password = Column(String(255), nullable=False)  # Especificar longitud para `password`
-    rol = Column(String(50), nullable=False)  # Especificar longitud para `rol`
+    id = Column(Integer, primary_key=True, index=True)
+    person_id = Column(Integer, ForeignKey('persons.id'))  # Relación con Person
+    username = Column(String(100), unique=True, nullable=False)
+    password = Column(String(255), nullable=False)
 
-    person = relationship("Person", back_populates="user")
-    audiometries = relationship("Audiometry", back_populates="user")
+    person = relationship("Person", back_populates="users")  # Relación inversa
+    audiometries = relationship("Audiometry", back_populates="user")  # Relación uno-a-muchos con Audiometry
