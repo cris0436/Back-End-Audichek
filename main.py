@@ -2,8 +2,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'Back-End-Audichek')))
 
-
-from database.Connections  import engine, Base
+from database.Conections import Base
 from models import *
 from models import User
 
