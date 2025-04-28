@@ -20,7 +20,7 @@ def create_user(user: UserCreate, db: Session = Depends(db_session.get_db)):
 
 # Auth user
 @router.post("/auth", response_model=UserOut)
-def create_user(user: AuthUser, db: Session = Depends(db_session.get_db)):
+def auth_user(user: AuthUser, db: Session = Depends(db_session.get_db)):
     return user_controller.user_auth(db, user)
 
 # Obtener un usuario por ID
