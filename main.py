@@ -13,7 +13,7 @@ app.include_router(user_router)
 
 @app.get("/")
 def read_root():
-    return {"message": "API funcionando correctamente 🚀"}
+    return {"message": "API funcionando correctamente 🚀-Frank uwu"}
 
 
 print("Las tablas han sido creadas correctamente en la base de datos.")
