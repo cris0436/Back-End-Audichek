@@ -1,0 +1,15 @@
+services:
+  - type: web  # Define que el servicio es de tipo web
+    name: back-end-audichek  # Nombre de tu aplicación en Render
+    env: python  # Entorno para tu aplicación
+    region: us  # Región del servidor (puedes cambiar según lo necesites)
+    plan: free  # Tipo de plan (puedes cambiarlo a otro como "starter", etc.)
+    buildCommand: "pip install -r requirements.txt"  # Comando para instalar dependencias
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port 10000"  # Comando para iniciar tu aplicación
+    autoDeploy: true  # Habilita despliegues automáticos cuando hay cambios en tu repo
+
+    envVars:  # Variables de entorno (configúralas según tu proyecto)
+      - key: DATABASE_URL
+        value: "postgresql://usuario:contraseña@host:puerto/base_de_datos"
+      - key: SECRET_KEY
+        value: "tu-secreto-super-seguro"
