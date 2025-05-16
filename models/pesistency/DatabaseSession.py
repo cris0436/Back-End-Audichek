@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from database.connections import SessionLocal
+from .connections import SessionLocal
 from models import User
 
 class DataBaseSession():

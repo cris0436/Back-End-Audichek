@@ -11,6 +11,7 @@ class Person(Base):
     email = Column(String(30), unique=True, index=True)
     birth_date = Column(Date, nullable=False)
     rol_id = Column(Integer, ForeignKey('rols.id'))  # Relación con Rol
+    
 
     rol = relationship("Rol", backref="persons")  # Relación uno-a-muchos con Rol
     users = relationship("User", back_populates="person")  # Relación uno-a-muchos con User

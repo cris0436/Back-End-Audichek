@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from database.DatabaseSession import DataBaseSession
-from controllers import user_controller
+from models.pesistency.DatabaseSession import DataBaseSession
+from controllers.user import user_controller
 from schemas.UserSchema import AuthUser, UserCreate, UserOut
 
 # Instancia de la sesión de base de datos

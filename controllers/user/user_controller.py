@@ -1,13 +1,13 @@
 from sqlalchemy.orm import Session
-from models import Person
-from models.User import User
-from models.Admin import Admin
+from models.entities import Person
+from models.entities import User
+from models.entities import Admin
 from schemas.UserSchema import AuthUser, UserCreate
 from sqlalchemy.exc import IntegrityError
 from exceptions.db_exceptions import handle_integrity_error  # <-- asegúrate de que esto exista
 from fastapi import HTTPException
 
-from models.Rol import Rol  # <- Importamos el modelo Rol
+from models.entities import Rol  # <- Importamos el modelo Rol
 
 def create_user(db: Session, user_data: UserCreate):
     try:
