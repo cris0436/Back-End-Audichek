@@ -11,3 +11,5 @@ class GetPersonRol(ABC):
         :return: Rol encontrado o creado.
         """
         pass
+def getGetPersonRol():
+    return GetPersonRol()

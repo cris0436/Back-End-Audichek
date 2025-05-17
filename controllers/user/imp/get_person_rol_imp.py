@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
+
 from models.entities import Rol
 from user.get_person_rol import GetPersonRol
-from user.get_person_rol import GetPersonRolController
+
 class GetPersonRolImp(GetPersonRol):
     def get_person_rol(self ,db: Session,rol_name: str):
         rol = db.query(Rol).filter(Rol.name == rol_name).first()
@@ -13,3 +14,6 @@ class GetPersonRolImp(GetPersonRol):
             db.refresh(new_rol)
             rol = new_rol
         return (rol)
+    
+def getPersonRol():
+    return GetPersonRolImp()

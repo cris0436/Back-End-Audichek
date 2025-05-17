@@ -6,15 +6,17 @@ from models.entities import User
 from models.entities import Admin
 from schemas.UserSchema import AuthUser, UserCreate
 from sqlalchemy.exc import IntegrityError
-from exceptions.db_exceptions import handle_integrity_error  # <-- asegúrate de que esto exista
+from exceptions.db_exceptions import handle_integrity_error
 from fastapi import HTTPException
-from controllers.user.imp.get_person_rol_imp import GetPersonRol;
+from imp import GetPersonRol
+from imp.get_person_rol_imp import getPersonRol
 import hashlib
-
-from models.entities import Rol  # <- Importamos el modelo Rol
+from fastapi  import Depends
+from models.entities import Rol 
+from models.pesistency import DataBaseSession as db
 
 class AddUserControllerImp(AddUserController):
-    def __init__(self, getRol: GetPersonRol, db: Session):
+    def __init__(self, getRol: GetPersonRol = Depends(getPersonRol()), db: Session = Depends(db.get_db())):
         self.db = db
         self.getRol = getRol
         
@@ -67,3 +69,6 @@ class AddUserControllerImp(AddUserController):
             self.db.rollback()
             print(f"Otro error: {e}")
             raise HTTPException(status_code=500, detail=f"Error inesperado al crear el usuario: {e}")
+
+def getAddUserControllerImp():
+    return AddUserControllerImp()

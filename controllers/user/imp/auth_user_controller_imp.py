@@ -15,6 +15,9 @@ class AuthUserControllerImp(AuthUserController):
                 return True
         else:
             return False
+        
+def getAuthUserController():
+    return AuthUserControllerImp()
 """
     def logout(self):
         return self.auth_user_service.logout()
