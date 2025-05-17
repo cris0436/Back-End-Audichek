@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-from database.connections import Base
+from models.persistence import Base
 
 class AudiometryResults(Base):
     __tablename__ = 'audiometry_results'

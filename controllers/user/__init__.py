@@ -1,7 +1,6 @@
-from imp import *
-from add_user_controller import *
-from get_person_rol import *
-from get_user import *
-from user import *
-from auth_user_controller import *
-from up_date_person_person import *
+
+from controllers.user.add_user_controller import AddUserController
+from controllers.user.get_person_rol import GetPersonRol
+from controllers.user.get_user import GetUserController
+from controllers.user.auth_user_controller import AuthUserController
+from controllers.user.up_date_person_person import UpDatePerson

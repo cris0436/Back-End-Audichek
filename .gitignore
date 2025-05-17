@@ -1,0 +1,27 @@
+# Archivos y carpetas de Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Entornos virtuales
+venv/
+env/
+
+# Archivos de configuración y dependencias
+*.env
+Pipfile
+Pipfile.lock
+requirements.txt
+
+# Archivos generados por herramientas y compilaciones
+*.log
+*.sqlite3
+*.db
+
+# Configuración específica de IDEs
+.vscode/
+.idea/
+*.swp
+
+# Carpeta de dependencias si usas Docker
+docker-compose.override.yml

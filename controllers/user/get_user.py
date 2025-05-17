@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 class GetUserController(ABC):
     @abstractmethod
-    def get_user(self, db, user_id: int):
+    def get_user(self, user_id: str):
         """
         Método abstracto para obtener un usuario por su ID.
         
@@ -13,7 +13,7 @@ class GetUserController(ABC):
         pass
     
     @abstractmethod
-    def get_all_users(self, db):
+    def get_all_users(self):
         """
         Método abstracto para obtener todos los usuarios.
         

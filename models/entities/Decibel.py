@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer
 from sqlalchemy.orm import relationship
-from database.connections import Base
+from models.persistence import Base
 
 class Decibel(Base):
     __tablename__ = 'decibels'

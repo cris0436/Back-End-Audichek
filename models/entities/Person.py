@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
-from database.connections import Base
+from models.persistence import Base
 
 
 class Person(Base):
@@ -11,7 +11,7 @@ class Person(Base):
     email = Column(String(30), unique=True, index=True)
     birth_date = Column(Date, nullable=False)
     rol_id = Column(Integer, ForeignKey('rols.id'))  # Relación con Rol
-    
+    cedula = Column(String(20), unique=True, index=True)
 
     rol = relationship("Rol", backref="persons")  # Relación uno-a-muchos con Rol
     users = relationship("User", back_populates="person")  # Relación uno-a-muchos con User
