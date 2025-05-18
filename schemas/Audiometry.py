@@ -1,31 +1,33 @@
 from pydantic import BaseModel, Field
-
+from datetime import datetime
 class DecibelFrequency(BaseModel):
-    level: float = Field(..., description="Decibel level in dB")
+    decibel: float = Field(..., description="Decibel level in dB")
     frequency: float = Field(..., description="Frequency in Hz")
-    ear: str = Field(..., description="Ear (left or right)")
-
+    ear: int = Field(..., description="Ear (0 for left, 1 for right)", ge=0, le=1)
+    is_ear: bool = Field(..., description="Hearing (true or false)")
+    
     class Config:
-        schema_extra = {
+        json_schema_extra = {  # En Pydantic v2, `schema_extra` cambió a `json_schema_extra`
             "example": {
-                "level": 25.0,
+                "decibel": 25.0,
                 "frequency": 1000.0,
-                "ear": "left"
+                "ear": True,
+                "is_ear": True
             }
         }
+
 class Audiometry(BaseModel):
     user_id: int = Field(..., description="User ID")
-    date: str = Field(..., description="Date of the audiometry")
+    date: datetime = datetime.now()
     decibel_frequencies: list[DecibelFrequency] = Field(..., description="List of decibel frequencies")
+    
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
-                "id": 1,
                 "user_id": 123,
-                "date": "2023-10-01",
                 "decibel_frequencies": [
-                    {"level": 25.0, "frequency": 1000.0, "ear": "left"},
-                    {"level": 30.0, "frequency": 2000.0, "ear": "right"}
+                    {"decibel": 25.0, "frequency": 1000.0, "ear": True, "is_ear": True},
+                    {"decibel": 30.0, "frequency": 2000.0, "ear":True, "is_ear": False}
                 ]
             }
         }

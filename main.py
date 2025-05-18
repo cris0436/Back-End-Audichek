@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from models.persistence import engine, Base
 from models import *
-from routers.user_routes import router as user_router  # Importamos el router
+from routers.user_routes import router as user_router
+from routers.audiometry_routes import router as audiometry_router  # Importamos el router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -21,6 +22,7 @@ Base.metadata.create_all(bind=engine)
 
 # Incluir routers
 app.include_router(user_router)
+app.include_router(audiometry_router)  # Incluimos el router de audiometrías
 
 @app.get("/")
 def read_root():

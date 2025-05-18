@@ -9,8 +9,8 @@ class AudiometryResults(Base):
     audiometry_id = Column(Integer, ForeignKey('audiometries.id'))
     frecuency_id = Column(Integer, ForeignKey('frequencies.id'))
     decibel_id = Column(Integer, ForeignKey('decibels.id'))
-    right_ear = Column(Boolean, nullable=True)
-    left_ear = Column(Boolean, nullable=True)
+    ear=Column(Boolean, nullable=False)  # True for right ear, False for left ear
+    is_ear=Column(Boolean, nullable=False)  # True if the patient heard the sound, False otherwise
 
     audiometry = relationship("Audiometry", back_populates="audiometry_results")
     frecuency = relationship("Frecuency", back_populates="audiometry_results")
