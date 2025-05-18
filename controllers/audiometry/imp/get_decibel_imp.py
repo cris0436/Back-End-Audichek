@@ -12,7 +12,7 @@ class GetDecibelControllerImp(GetDecibelController):
         try:
             decibel = self.db.query(Decibel).filter(Decibel.value == decibel_value).first()
             if decibel is None:
-                decibel = Decibel(decibel_value=decibel_value)
+                decibel = Decibel(value=decibel_value)
                 self.db.add(decibel)
                 self.db.commit()
                 self.db.refresh(decibel)

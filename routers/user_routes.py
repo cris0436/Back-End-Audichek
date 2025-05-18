@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from models.persistence.DatabaseSession import DataBaseSession
-from controllers.user import user_controller
 from schemas.UserSchema import AuthUser, UserCreate, UserOut
 from controllers.user.add_user_controller import AddUserController
 from controllers.user.imp.add_user_controller_imp import getAddUserControllerImp

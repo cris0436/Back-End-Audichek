@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from controllers.audiometry.imp.add_audiometry_results_imp import get_add_audiometry_result
 
 from fastapi import Depends ,HTTPException, status
-
+from models.entities.User import User
 
 db_connection = DataBaseSession()  
 
@@ -21,13 +21,21 @@ class AddAudiometryControllerImp(AddAudiometryController):
     def add_audiometry(self, audiometry_data:AudiometrySchema) -> AudiometrySchema:
         try:
             audiometry:Audiometry = Audiometry(patient_id=audiometry_data.user_id)
+            user:User=self.db.query(User).filter(User.id == audiometry_data.user_id).first()
+            if user is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="User not found",
+                    headers={"X-Error": "User not found"}
+                )
             self.db.add(audiometry)
             self.db.commit()
             self.db.refresh(audiometry)
-            audiometry=self.db.query(Audiometry).filter(Audiometry.id == audiometry.id).first()
+            newAudiometry:Audiometry=self.db.query(Audiometry).filter(Audiometry.patient_id == audiometry_data.user_id).first()
             for i in range(len(audiometry_data.decibel_frequencies)):
-                self.add_audiometry_results.add_audiometry_result(audiometry.id, audiometry_data.decibel_frequencies[i])
-            return audiometry
+                self.add_audiometry_results.add_audiometry_result(newAudiometry.id, audiometry_data.decibel_frequencies[i])
+            return audiometry_data
+        
         except Exception as e:
             self.db.rollback()
             raise HTTPException(

@@ -12,7 +12,7 @@ class GetFrequencyControllerImp(GetFrequencyController):
         try:
             frecuancy = self.db.query(Frecuency).filter(Frecuency.value == frecuency_value).first()
             if frecuancy is None:
-                frecuancy = Frecuency(frecuency_value=frecuency_value)
+                frecuancy = Frecuency(value=frecuency_value)
                 self.db.add(frecuancy)
                 self.db.commit()
                 self.db.refresh(frecuancy)
