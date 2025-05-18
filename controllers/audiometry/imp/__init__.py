@@ -1,0 +1,4 @@
+from controllers.audiometry.imp.get_frecuency_imp import GetFrequencyControllerImp
+from controllers.audiometry.imp.get_decibel_imp import GetDecibelControllerImp
+from controllers.audiometry.imp.add_audiometry_results_imp import AddAudiometryResultsIm
+from controllers.audiometry.imp.add_audiometry_imp import AddAudiometryControllerImp

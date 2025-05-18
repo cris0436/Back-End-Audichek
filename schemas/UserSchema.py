@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel , EmailStr, Field
 from datetime import date
 class AuthUser(BaseModel):
     username: str
@@ -8,8 +8,9 @@ class AuthUser(BaseModel):
 
 # Nuevo esquema para la persona relacionada
 class PersonData(BaseModel):
+    cedula: str = None
     name: str = None
-    email: str = None
+    email: EmailStr = None
     role: str = None
     birth_date: date = None
     class Config:
@@ -21,8 +22,9 @@ from pydantic import BaseModel
 from datetime import date
 
 class UserCreate(BaseModel):
+    cedula: int = None
     name: str
-    email: str
+    email: EmailStr
     birth_date: date
     username: str
     password: str

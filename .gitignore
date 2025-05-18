@@ -1,6 +1,7 @@
 # Archivos y carpetas de Python
-**/__pycache__/
-
+*/__pycache__/
+*__pycache__/
+__pycache__/
 *.pyc
 *.pyo
 
@@ -23,3 +24,6 @@ requirements.txt
 .vscode/
 .idea/
 *.swp
+
+# Carpeta de dependencias si usas Docker
+docker-compose.override.yml
