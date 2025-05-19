@@ -6,7 +6,7 @@ from schemas import UserCreate
 from models.entities import User
 from models.entities import Person
 from models.entities import Rol
-
+from hashlib import sha256
 db_session= DataBaseSession()
 class UpdatePersonImp(UpDatePerson):
     def __init__(self,db:Session):
@@ -30,13 +30,25 @@ class UpdatePersonImp(UpDatePerson):
             person.birth_date = updated_data.birth_date
             person.rol_id = rol.id
             user.ocupation = updated_data.ocupation
-            user.password = updated_data.password
+            user.password = sha256(updated_data.password.encode()).hexdigest()
             user.username = updated_data.username
 
             self.db.commit()
             self.db.refresh(user)
-            self.db.refresh(person)
-            return user
+
+            return {
+                "id": user.id,
+                "username": user.username,
+                "ocupation": user.ocupation,
+                "person": {
+                    "cedula": person.cedula,
+                    "name": person.name,
+                    "email": person.email,
+                    "ocupation": user.ocupation,
+                    "role": rol.name,
+                    "birth_date": person.birth_date
+                }
+            }
         except Exception as e:
             self.db.rollback()
             raise HTTPException(

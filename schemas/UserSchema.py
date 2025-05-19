@@ -5,6 +5,11 @@ class AuthUser(BaseModel):
     password: str
     class Config:
         from_attributes = True
+    class Example:
+        example = {
+            "username": "johndoe",
+            "password": "password123"
+        }
 
 # Nuevo esquema para la persona relacionada
 class PersonData(BaseModel):
@@ -15,6 +20,14 @@ class PersonData(BaseModel):
     birth_date: date = None
     class Config:
         from_attributes = True
+    class Example:
+        example = {
+            "cedula": "123456789",
+            "name": "John Doe",
+            "email": "",
+            "role": "admin",
+            "birth_date": "1990-01-01"
+        }
 
 
 # Esquema de creación de usuario
@@ -32,6 +45,17 @@ class UserCreate(BaseModel):
     ocupation: str = None  # Ocupación del usuario (puede ser el rol o cualquier otra cosa)
     class Config:
         orm_mode = True
+    class Example:
+        example = {
+            "cedula": "123456789",
+            "name": "John Doe",
+            "email": "",
+            "birth_date": "1990-01-01",
+            "username": "johndoe",
+            "password": "password123",
+            "rol": "admin",
+            "ocupation": "developer"
+        }
 
 
 # Esquema de salida de usuario
@@ -42,4 +66,4 @@ class UserOut(BaseModel):
     person: PersonData 
     class Config:
         from_attributes = True
-
+    
