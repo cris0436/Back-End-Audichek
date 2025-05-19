@@ -1,15 +1,7 @@
 from abc import ABC, abstractmethod
-
+from schemas.Audiometry import Audiometry as Audiometry_shema
 class GetAudiometryController(ABC):
-    @abstractmethod
-    def get_audiometryResult(self, audiometry_id: str):
-        """
-        Get audiometry by ID
-        :param audiometry_id: ID of the audiometry to retrieve
-        :return: Audiometry object
-        """
-        pass
-    
+
     @abstractmethod
     def getAllAudiometries(self):
         """
@@ -20,7 +12,7 @@ class GetAudiometryController(ABC):
         pass
 
     @abstractmethod
-    def getAudiometryByUserId(self, user_id: str):
+    def getAudiometryByUserId(self, user_id: int):
         """
         Get all audiometries for a user
         :param user_id: ID of the user to retrieve audiometries for

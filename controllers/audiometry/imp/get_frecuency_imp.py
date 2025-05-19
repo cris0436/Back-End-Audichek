@@ -8,6 +8,23 @@ db_session = DataBaseSession()
 class GetFrequencyControllerImp(GetFrequencyController):
     def __init__(self,db:Session):
         self.db = db
+    def get_frecuency_by_id(self, frecuency_id: int):
+        try:
+            frecuancy = self.db.query(Frecuency).filter(Frecuency.id == frecuency_id).first()
+            if frecuancy is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Frecuency not found",
+                    headers={"X-Error": "Frecuency not found"}
+                )
+            return frecuancy
+        except Exception as e:
+            self.db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error while getting frecuency",
+                headers={"X-Error": str(e)}
+            )
     def get_frequency(self, frecuency_value: int):
         try:
             frecuancy = self.db.query(Frecuency).filter(Frecuency.value == frecuency_value).first()

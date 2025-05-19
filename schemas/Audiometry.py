@@ -31,3 +31,21 @@ class Audiometry(BaseModel):
                 ]
             }
         }
+
+class AudiometryResult(BaseModel):
+    audiometry_score: float = Field(..., description="Audiometry score")
+    user_id: int = Field(..., description="User ID")
+    decibel_frequencies: list[DecibelFrequency] = Field(..., description="List of decibel frequencies")
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "audiometry_score": 85.0,
+                "user_id": 123,
+                "decibel_frequencies": [
+                    {"decibel": 25.0, "frequency": 1000.0, "ear": True, "is_ear": True},
+                    {"decibel": 30.0, "frequency": 2000.0, "ear":True, "is_ear": False}
+                ]
+            }
+        }
+        
