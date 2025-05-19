@@ -1,15 +1,13 @@
 # Framework principal
-uvicorn
 fastapi
+uvicorn
 starlette
-
 # Base de datos y autenticación
 SQLAlchemy==2.0.41
 mysql-connector-python==8.3.0
 PyMySQL==1.1.1
 cryptography==45.0.2
-PyJWT==2.10.1
-jwt
+PyJWT==2.8.0  # Versión corregida
 rsa==4.9
 
 # Utilidades y herramientas adicionales
@@ -28,7 +26,7 @@ qrcode==7.4.2
 
 # Herramientas de desarrollo y despliegue
 PyInstaller==6.6.0
-PySimpleGUI==5.0.8.3  # Versión corregida
+PySimpleGUI==5.0.8.3
 watchdog==4.0.0
 watchfiles==0.21.0
 
