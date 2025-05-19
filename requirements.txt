@@ -1,7 +1,7 @@
 # Framework principal
-fastapi>=0.112.0,<0.113.0
-uvicorn==0.29.0
-starlette==0.36.3
+uvicorn
+fastapi
+starlette
 
 # Base de datos y autenticación
 SQLAlchemy==2.0.41
