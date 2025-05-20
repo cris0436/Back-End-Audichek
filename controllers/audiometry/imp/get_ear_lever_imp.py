@@ -21,7 +21,7 @@ class GetEarLeverImp(GetEarLeverController):
     def get_ear_level_65(self, audiometry_data: Audiometry_shema, age: int) -> float:
         frecuency = 0.000004167 * (age)**4 - 0.0006833 * (age)**3 + 0.0375 * (age)**2 - 0.73492 * (age) + 20
         frecuency = frecuency * 1000  # Convertir a Hz
-        frecuency_not_ear = max(
+        frecuency_not_ear = min(
             (i.frequency for i in audiometry_data.decibel_frequencies if not i.is_ear),
             default=0
         )
