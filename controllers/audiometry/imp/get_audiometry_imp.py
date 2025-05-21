@@ -75,6 +75,7 @@ class GetAudiometryControllerImp(GetAudiometryController):
                     headers={"X-Error": "No audiometries found"}
                 )
             
+            
             audiometrie_results = self.db.query(AudiometryResults).filter(AudiometryResults.audiometry_id == audiometry.id).all()
             
             if audiometrie_results is None:
@@ -95,12 +96,11 @@ class GetAudiometryControllerImp(GetAudiometryController):
                 decibel_frequencies=audiometry_results_schema
             )
             left_ear_decibel = [self.get_decibel_controller.get_decibel_by_id(x.decibel_id).value for x in audiometrie_results if x.is_ear and x.ear == False ]
-            left_ear_frequency = [self.get_frecuency_controller.get_frecuency_by_id(x.frecuency_id).value for x in audiometrie_results if x.is_ear and x.ear == False ]
             right_ear_decibel = [self.get_decibel_controller.get_decibel_by_id(x.decibel_id).value for x in audiometrie_results if x.is_ear and x.ear == True ]
             right_ear_frequency = [self.get_frecuency_controller.get_frecuency_by_id(x.frecuency_id).value for x in audiometrie_results if x.is_ear and x.ear == True ]
-            
+        
             ear_level = self.get_ear_lever_controller.get_ear_level(audiometri_shema,self.get_ear_lever_controller.getAge(user_id))
-            return [left_ear_decibel, left_ear_frequency, right_ear_decibel, right_ear_frequency,ear_level]
+            return [left_ear_decibel, right_ear_decibel, right_ear_frequency,ear_level]
         
         except Exception as e:
             self.db.rollback()

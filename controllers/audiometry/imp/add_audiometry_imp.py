@@ -31,9 +31,9 @@ class AddAudiometryControllerImp(AddAudiometryController):
             self.db.add(audiometry)
             self.db.commit()
             self.db.refresh(audiometry)
-            newAudiometry:Audiometry=self.db.query(Audiometry).filter(Audiometry.patient_id == audiometry_data.user_id).first()
+
             for i in range(len(audiometry_data.decibel_frequencies)):
-                self.add_audiometry_results.add_audiometry_result(newAudiometry.id, audiometry_data.decibel_frequencies[i])
+                self.add_audiometry_results.add_audiometry_result(audiometry.id, audiometry_data.decibel_frequencies[i])
             return audiometry_data
         
         except Exception as e:

@@ -21,6 +21,7 @@ class AddAudiometryResultsIm(AddAudiometryResults):
         self.db=db
         self.get_decibel_controller = get_decibel_controller
         self.get_frecuency_controller = get_frecuency_controller
+
     def add_audiometry_result(self,audiometryId:int,frecuencyInfo:DecibelFrequency):
         try:
             decibel:Decibel=self.get_decibel_controller.get_decibel(frecuencyInfo.decibel)
@@ -29,9 +30,9 @@ class AddAudiometryResultsIm(AddAudiometryResults):
                 audiometry_id=audiometryId,
                 frecuency_id=fruency.id,
                 decibel_id=decibel.id,
-                ear=frecuencyInfo.ear,
+                ear=frecuencyInfo.ear, 
                 is_ear=frecuencyInfo.is_ear
-            )
+            ) 
             self.db.add(audiometry_result)
             self.db.commit()
             self.db.refresh(audiometry_result)
