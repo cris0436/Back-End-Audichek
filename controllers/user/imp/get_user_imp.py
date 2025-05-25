@@ -24,7 +24,7 @@ class GetUserImp(GetUserController):
             birth_date: date = None"""
         user_shema: list[UserOut] = []
         users:list[User] = self.db.query(User).all()
-        for user in user:
+        for user in users:
             person=self.db.query(Person).first()
             user_shema.append(UserOut(
                 username=user.username,
