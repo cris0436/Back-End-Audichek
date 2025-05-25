@@ -1,29 +1,33 @@
-# Archivos y carpetas de Python
-*/__pycache__/
-*__pycache__/
-__pycache__/
-*.pyc
-*.pyo
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# Entornos virtuales
-venv/
-env/
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-# Archivos de configuración y dependencias
-*.env
-Pipfile
-Pipfile.lock
-requirements.txt
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
 
-# Archivos generados por herramientas y compilaciones
-*.log
-*.sqlite3
-*.db
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Configuración específica de IDEs
+### VS Code ###
 .vscode/
-.idea/
-*.swp
-
-# Carpeta de dependencias si usas Docker
-docker-compose.override.yml
