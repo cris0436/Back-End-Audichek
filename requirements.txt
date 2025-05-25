@@ -1,0 +1,37 @@
+# Framework principal
+fastapi
+uvicorn
+starlette
+# Base de datos y autenticación
+SQLAlchemy==2.0.41
+mysql-connector-python==8.3.0
+PyMySQL==1.1.1
+cryptography==45.0.2
+PyJWT==2.8.0  # Versión corregida
+rsa==4.9
+
+# Utilidades y herramientas adicionales
+requests==2.31.0
+httpx==0.27.0
+httpcore==1.0.4
+sniffio==1.3.1
+email-validator==2.2.0
+python-dotenv==1.0.1
+
+# Librerías para procesamiento de datos y gráficos
+numpy==1.26.4
+matplotlib==3.9.0
+pillow==10.3.0
+qrcode==7.4.2
+
+# Herramientas de desarrollo y despliegue
+PyInstaller==6.6.0
+PySimpleGUI==5.0.8.3
+watchdog==4.0.0
+watchfiles==0.21.0
+
+# Dependencias opcionales
+Jinja2==3.1.3
+MarkupSafe==2.1.5
+typing_extensions==4.10.0
+rich==13.7.1
