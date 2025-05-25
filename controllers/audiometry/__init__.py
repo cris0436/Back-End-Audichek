@@ -1,0 +1,6 @@
+from controllers.audiometry.get_decibel import GetDecibelController
+from controllers.audiometry.get_audiometry import GetAudiometryController
+from controllers.audiometry.get_frecuency import GetFrequencyController
+from controllers.audiometry.add_audiometry import AddAudiometryController
+from controllers.audiometry.add_audiometry_results import AddAudiometryResults
+from controllers.audiometry.get_ear_lever import GetEarLeverController

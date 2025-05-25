@@ -1,33 +1,27 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Archivos y carpetas de Python
+__pycache__/
+*.pyc
+*.pyo
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Entornos virtuales
+venv/
+env/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+# Archivos de configuración y dependencias
+*.env
+Pipfile
+Pipfile.lock
+requirements.txt
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Archivos generados por herramientas y compilaciones
+*.log
+*.sqlite3
+*.db
 
-### VS Code ###
+# Configuración específica de IDEs
 .vscode/
+.idea/
+*.swp
+
+# Carpeta de dependencias si usas Docker
+docker-compose.override.yml
