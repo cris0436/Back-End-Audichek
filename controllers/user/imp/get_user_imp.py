@@ -27,6 +27,7 @@ class GetUserImp(GetUserController):
         for user in users:
             person=self.db.query(Person).first()
             user_shema.append(UserOut(
+                id=user.id,
                 username=user.username,
                 ocupation=user.ocupation,
                 person=PersonData(
