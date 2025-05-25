@@ -60,10 +60,10 @@ class UserCreate(BaseModel):
 
 # Esquema de salida de usuario
 class UserOut(BaseModel):
-    id: int
-    username: str
+    id: int= None   
+    username: str= None   
     ocupation: str = None   
-    person: PersonData 
+    person: PersonData = None   
     class Config:
         from_attributes = True
     
