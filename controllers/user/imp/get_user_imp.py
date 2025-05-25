@@ -32,8 +32,10 @@ class GetUserImp(GetUserController):
                 username=user.username,
                 ocupation=user.ocupation,
                 person=PersonData(
+                    
                     cedula=person.cedula,
                     name=person.name,
+                    email = person.email,
                     role="User",
                     birth_date=person.birth_date
 
