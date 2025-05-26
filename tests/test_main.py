@@ -1,3 +1,10 @@
+from models.entities.Frecuency import Frecuency
+from models.entities.Decibel import Decibel
+from controllers.audiometry.imp.get_frecuency_imp import GetFrequencyControllerImp
+from controllers.audiometry.imp.get_decibel_imp import GetDecibelControllerImp
+
+import pytest
+from fastapi import HTTPException, status, Depends
 def test_usuario_autenticacion_login_y_token(client):
     """
     Prueba el proceso de autenticación:
@@ -188,3 +195,119 @@ def test_audiometrias_consulta(client):
 
     assert any(v in [25.0, 35.0, 750.0, 1500.0] for v in valores_numericos), \
         f"No se encontraron valores esperados en la respuesta: {valores_numericos}"
+    
+
+
+def test_get_frecuency_by_id_found(db_session):
+    # Arrange
+    frecuency = Frecuency(value=1000)
+    db_session.add(frecuency)
+    db_session.commit()
+    controller = GetFrequencyControllerImp(db_session)
+    # Act
+    result = controller.get_frecuency_by_id(frecuency.id)
+    # Assert
+    assert result.id == frecuency.id
+    assert result.value == 1000
+
+def test_get_frecuency_by_id_not_found(db_session):
+    controller = GetFrequencyControllerImp(db_session)
+    with pytest.raises(HTTPException) as excinfo:
+        controller.get_frecuency_by_id(999)
+    assert excinfo.value.status_code == 404
+    assert "Frecuency not found" in excinfo.value.detail
+
+def test_get_frequency_existing(db_session):
+    frecuency = Frecuency(value=2000)
+    db_session.add(frecuency)
+    db_session.commit()
+    controller = GetFrequencyControllerImp(db_session)
+    result = controller.get_frequency(2000)
+    assert result.value == 2000
+    assert result.id == frecuency.id
+
+def test_get_frequency_creates_new(db_session):
+    controller = GetFrequencyControllerImp(db_session)
+    result = controller.get_frequency(3000)
+    assert result.value == 3000
+    # Should now exist in DB
+    db_obj = db_session.query(Frecuency).filter(Frecuency.value == 3000).first()
+    assert db_obj is not None
+    assert db_obj.value == 3000
+
+def test_get_decibel_by_id_found(db_session):
+    decibel = Decibel(value=55.5)
+    db_session.add(decibel)
+    db_session.commit()
+    controller = GetDecibelControllerImp(db_session)
+    result = controller.get_decibel_by_id(decibel.id)
+    assert result.id == decibel.id
+    assert result.value == 55.5
+def test_get_decibel_by_id_not_found(db_session):
+    controller = GetDecibelControllerImp(db_session)
+    with pytest.raises(HTTPException) as excinfo:
+        controller.get_decibel_by_id(9999)
+    assert excinfo.value.status_code == 404
+    assert "Decibel not found" in excinfo.value.detail
+def test_get_decibel_existing(db_session):
+    decibel = Decibel(value=70.0)
+    db_session.add(decibel)
+    db_session.commit()
+    controller = GetDecibelControllerImp(db_session)
+    result = controller.get_decibel(70.0)
+    assert result.value == 70.0
+    assert result.id == decibel.id
+def test_get_decibel_creates_new(db_session):
+    controller = GetDecibelControllerImp(db_session)
+    result = controller.get_decibel(80.0)
+    assert result.value == 80.0
+    db_obj = db_session.query(Decibel).filter(Decibel.value == 80.0).first()
+    assert db_obj is not None
+    assert db_obj.value == 80.0
+
+def test_get_ear_level_100(db_session):
+    from controllers.audiometry.imp.get_ear_lever_imp import GetEarLeverImp
+    from models.entities.AudiometryResults import AudiometryResults
+    from models.entities.Frecuency import Frecuency
+    from models.entities.Decibel import Decibel
+    from schemas.Audiometry import Audiometry, DecibelFrequency
+
+    # Arrange
+    controller = GetEarLeverImp(db_session)
+    audiometry_data = Audiometry(
+        user_id=1,
+        decibel_frequencies=[
+            DecibelFrequency(decibel=20, frequency=500, ear=True, is_ear=True),
+            DecibelFrequency(decibel=30, frequency=1000, ear=False, is_ear=True)
+        ]
+    )
+    
+    # Act
+    result = controller.get_ear_level(audiometry_data, 25)
+    
+    # Assert
+    assert result == 100.0  # Perfecto estado auditivo en este caso
+
+
+def test_get_ear_level_no_100(db_session):
+    from controllers.audiometry.imp.get_ear_lever_imp import GetEarLeverImp
+    from models.entities.AudiometryResults import AudiometryResults
+    from models.entities.Frecuency import Frecuency
+    from models.entities.Decibel import Decibel
+    from schemas.Audiometry import Audiometry, DecibelFrequency
+
+    # Arrange
+    controller = GetEarLeverImp(db_session)
+    audiometry_data = Audiometry(
+        user_id=1,
+        decibel_frequencies=[
+            DecibelFrequency(decibel=20, frequency=500, ear=True, is_ear=False),
+            DecibelFrequency(decibel=30, frequency=1000, ear=False, is_ear=True)
+        ]
+    )
+    
+    # Act
+    result = controller.get_ear_level(audiometry_data, 25)
+    
+    # Assert
+    assert result < 100.0 

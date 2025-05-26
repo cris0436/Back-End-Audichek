@@ -61,3 +61,17 @@ def client():
     Base.metadata.drop_all(bind=engine_test)
     Base.metadata.create_all(bind=engine_test)
     yield TestClient(app)
+
+@pytest.fixture()
+def db_session():
+    """Fixture que proporciona una sesión de base de datos para pruebas unitarias directas."""
+    connection = engine_test.connect()
+    transaction = connection.begin()
+    session = TestingSessionLocal(bind=connection)
+
+    try:
+        yield session
+    finally:
+        session.close()
+        transaction.rollback()
+        connection.close()

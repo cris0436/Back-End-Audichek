@@ -17,6 +17,8 @@ class GetDecibelControllerImp(GetDecibelController):
                     headers={"X-Error": "Decibel not found"}
                 )
             return decibel
+        except HTTPException as http_exc:
+            raise http_exc  # Mantiene la excepción sin cambiar su tipo
         except Exception as e:
             self.db.rollback()
             raise HTTPException(
