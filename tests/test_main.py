@@ -90,7 +90,7 @@ def test_creacion_usuario_nuevo(client):
     # (En la respuesta de creación, posiblemente no se devuelve la contraseña en absoluto por seguridad)
     assert "password" not in resultado  # La contraseña no debería aparecer en la respuesta
 
-def test_audiometrias_creacion_y_consulta(client):
+def test_audiometrias_creacion(client):
     usuario = {
         "cedula": "1122334455",
         "name": "Luis Martinez",
@@ -133,6 +133,42 @@ def test_audiometrias_creacion_y_consulta(client):
     assert isinstance(resultado_crea["decibel_frequencies"], list)
     assert len(resultado_crea["decibel_frequencies"]) == 2
 
+def test_audiometrias_consulta(client):
+    # Primero, crear usuario y audiometría como en el test anterior
+    usuario = {
+        "cedula": "2233445566",
+        "name": "Maria Lopez",
+        "email": "maria.lopez@example.com",
+        "birth_date": "1992-03-12",
+        "username": "marialpz",
+        "password": "pass5678",
+        "rol": "Paciente",
+        "ocupation": "Doctora"
+    }
+
+    resp_usuario = client.post("/users/", json=usuario)
+    assert resp_usuario.status_code == 200
+    user_data = resp_usuario.json()
+    user_id = user_data["id"]
+
+    resp_login = client.post("/users/auth", json={
+        "username": usuario["username"],
+        "password": usuario["password"]
+    })
+    assert resp_login.status_code == 200
+    token = resp_login.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    audiometria_nueva = {
+        "user_id": user_id,
+        "decibel_frequencies": [
+            {"decibel": 25.0, "frequency": 750.0, "ear": 0, "is_ear": True},
+            {"decibel": 35.0, "frequency": 1500.0, "ear": 1, "is_ear": False}
+        ]
+    }
+    resp_crea = client.post("/audiometries/", json=audiometria_nueva, headers=headers)
+    assert resp_crea.status_code == 200
+
     # Consultar audiometrías
     resp_consulta = client.get("/audiometries/", headers=headers)
     assert resp_consulta.status_code == 200
@@ -140,13 +176,9 @@ def test_audiometrias_creacion_y_consulta(client):
     assert isinstance(lista_audiometrias, list)
     assert len(lista_audiometrias) >= 1
 
-    print(">>> RESPUESTA DE /audiometries/:", lista_audiometrias)
-
-    # Validar que el primer ítem sea una lista que contiene sublistas o valores numéricos
     audiometria_respuesta = lista_audiometrias[0]
     assert isinstance(audiometria_respuesta, list)
 
-    # Extraer todos los números
     valores_numericos = []
     for item in audiometria_respuesta:
         if isinstance(item, list):
@@ -154,6 +186,5 @@ def test_audiometrias_creacion_y_consulta(client):
         elif isinstance(item, (int, float)):
             valores_numericos.append(item)
 
-    # Verificar que haya por lo menos algún valor esperado (como el 20.0 o 30.0 que enviamos)
-    assert any(v in [20.0, 30.0, 500.0, 1000.0] for v in valores_numericos), \
+    assert any(v in [25.0, 35.0, 750.0, 1500.0] for v in valores_numericos), \
         f"No se encontraron valores esperados en la respuesta: {valores_numericos}"
