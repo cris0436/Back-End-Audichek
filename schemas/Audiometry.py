@@ -21,6 +21,10 @@ class Audiometry(BaseModel):
     date: datetime = datetime.now()
     decibel_frequencies: list[DecibelFrequency] = Field(..., description="List of decibel frequencies")
     
+    def __str__(self):
+        print(self.user_id," ",self.date," ",
+              [(x.decibel,x.frequency,x.ear,x.is_ear)
+               for x in self.decibel_frequencies])
     class Config:
         json_schema_extra = {
             "example": {
@@ -31,6 +35,7 @@ class Audiometry(BaseModel):
                 ]
             }
         }
+    
 
 class AudiometryResult(BaseModel):
     audiometry_score: float = Field(..., description="Audiometry score")

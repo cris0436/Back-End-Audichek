@@ -18,7 +18,7 @@ class GetEarLeverImp(GetEarLeverController):
     def exponential_function(self, x: float) -> float:
         return 6.2971 * math.exp(0.0001 * x)
 
-    def get_ear_level_65(self, audiometry_data: Audiometry_shema, age: int) -> float:
+    def get_ear_level_80(self, audiometry_data: Audiometry_shema, age: int) -> float:
         frecuency = 0.000004167 * (age)**4 - 0.0006833 * (age)**3 + 0.0375 * (age)**2 - 0.73492 * (age) + 20
         frecuency = frecuency * 1000  # Convertir a Hz
         frecuency_not_ear = min(
@@ -28,15 +28,18 @@ class GetEarLeverImp(GetEarLeverController):
 
         if frecuency_not_ear == 0:
             return 100  # Perfecto estado auditivo
-
-        return max(0, (frecuency - (frecuency_not_ear + 2000)) * 100 / frecuency)  # Evitar negativos
+        
+        if (frecuency - (frecuency_not_ear + 2000)) < 0:
+            return 100 - max(0, ((frecuency_not_ear + 2000)-frecuency  ) * 100 / frecuency)
+        
+        return 100 - max(0, (frecuency - (frecuency_not_ear + 2000)) * 100 / frecuency)  
 
     def get_ear_level(self, audiometry_data: Audiometry_shema, age: int) -> float:
         if age < 0:
             raise ValueError("Age cannot be negative")
 
-        if age <= 65:
-            return self.get_ear_level_65(audiometry_data, age)
+        if age <= 80:
+            return self.get_ear_level_80(audiometry_data, age)
         else:
             value = 100
             for i in audiometry_data.decibel_frequencies:

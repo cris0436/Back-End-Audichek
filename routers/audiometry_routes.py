@@ -18,8 +18,8 @@ def create_audiometry(
     Los datos no se analizan automáticamente, solo se almacenan.
     """
     return add_audiometry_controller.add_audiometry(audiometry_data)
-
-@router.get("/", summary="Obtener audiometrías del usuario actual" ,response_model=list[list[int]])
+ 
+@router.get("/", summary="Obtener audiometrías del usuario actual" ,response_model=list)
 def get_my_audiometries(
     get_audiometry_controller: GetAudiometryController = Depends(get_audiometry_imp_controller),
     current_user: UserOut = Depends(get_current_user)):

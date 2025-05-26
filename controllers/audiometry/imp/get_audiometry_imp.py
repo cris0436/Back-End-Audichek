@@ -57,25 +57,26 @@ class GetAudiometryControllerImp(GetAudiometryController):
                 headers={"X-Error": str(e)}
             )
     
-    def getAudiometryByUserId(self, user_id: int) -> list:
+    def getAudiometryByUserId(self, userid: int) -> list:
         try:
-            user = self.db.query(User).filter(User.id == user_id).first()
+            user = self.db.query(User).filter(User.id == userid).first()
             if user is None:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
                     detail="User not found",
                     headers={"X-Error": "User not found"}
                 )
-            audiometry = self.db.query(Audiometry).filter(Audiometry.patient_id==user_id).first()
+            audiometry = (
+                self.db.query(Audiometry)
+                .filter(Audiometry.patient_id == userid)
+                .order_by(Audiometry.id.desc())
+                .first()
+            )
             
             if audiometry is None:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="No audiometries found",
-                    headers={"X-Error": "No audiometries found"}
-                )
+                return []
             
-            
+             
             audiometrie_results = self.db.query(AudiometryResults).filter(AudiometryResults.audiometry_id == audiometry.id).all()
             
             if audiometrie_results is None:
@@ -84,23 +85,43 @@ class GetAudiometryControllerImp(GetAudiometryController):
                     detail="No audiometries found",
                     headers={"X-Error": "No audiometries found"}
                 )
-            
-            audiometry_results_schema = [DecibelFrequency(
+
+            audiometri_shema = Audiometry_shema(
+                user_id=userid ,
+                decibel_frequencies=
+                [DecibelFrequency(
                 decibel=self.get_decibel_controller.get_decibel_by_id(x.decibel_id).value,
                 frequency=self.get_frecuency_controller.get_frecuency_by_id(x.frecuency_id).value,
                 ear=x.ear,
-                is_ear=x.is_ear) for x in audiometrie_results]
+                is_ear=x.is_ear) for x in audiometrie_results])
             
-            audiometri_shema = Audiometry_shema(
-                user_id=user_id,
-                decibel_frequencies=audiometry_results_schema
-            )
-            left_ear_decibel = [self.get_decibel_controller.get_decibel_by_id(x.decibel_id).value for x in audiometrie_results if x.is_ear and x.ear == False ]
-            right_ear_decibel = [self.get_decibel_controller.get_decibel_by_id(x.decibel_id).value for x in audiometrie_results if x.is_ear and x.ear == True ]
-            right_ear_frequency = [self.get_frecuency_controller.get_frecuency_by_id(x.frecuency_id).value for x in audiometrie_results if x.is_ear and x.ear == True ]
-        
-            ear_level = self.get_ear_lever_controller.get_ear_level(audiometri_shema,self.get_ear_lever_controller.getAge(user_id))
-            return [left_ear_decibel, right_ear_decibel, right_ear_frequency,ear_level]
+            audiometri_shema_left = Audiometry_shema(
+                user_id=userid ,
+                decibel_frequencies=
+                [DecibelFrequency(
+                decibel=self.get_decibel_controller.get_decibel_by_id(x.decibel_id).value,
+                frequency=self.get_frecuency_controller.get_frecuency_by_id(x.frecuency_id).value,
+                ear=x.ear,
+                is_ear=x.is_ear) for x in audiometrie_results if x.ear == False])
+            
+            audiometri_shema_right = Audiometry_shema(
+                user_id=userid ,
+                decibel_frequencies=
+                [DecibelFrequency(
+                decibel=self.get_decibel_controller.get_decibel_by_id(x.decibel_id).value,
+                frequency=self.get_frecuency_controller.get_frecuency_by_id(x.frecuency_id).value,
+                ear=x.ear,
+                is_ear=x.is_ear) for x in audiometrie_results if x.ear == True])
+
+            left_ear_decibel = [self.get_decibel_controller.get_decibel_by_id(x.decibel_id).value for x in audiometrie_results if   x.ear == False ]
+            right_ear_decibel = [self.get_decibel_controller.get_decibel_by_id(x.decibel_id).value for x in audiometrie_results if  x.ear == True ]
+            ear_frequency = [self.get_frecuency_controller.get_frecuency_by_id(x.frecuency_id).value for x in audiometrie_results if  x.ear == True ]
+
+            ear_level = self.get_ear_lever_controller.get_ear_level(audiometri_shema ,self.get_ear_lever_controller.getAge(userid))
+            ear_level_left =self.get_ear_lever_controller.get_ear_level(audiometri_shema_left ,self.get_ear_lever_controller.getAge(userid))
+            ear_level_right =self.get_ear_lever_controller.get_ear_level(audiometri_shema_right,self.get_ear_lever_controller.getAge(userid))
+
+            return [left_ear_decibel, right_ear_decibel, ear_frequency,ear_level ,[ear_level_left ,ear_level_right]]
         
         except Exception as e:
             self.db.rollback()
