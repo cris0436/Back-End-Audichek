@@ -49,3 +49,6 @@ class AudiometryResult(BaseModel):
             }
         }
         
+class AudiometryResultOut(BaseModel):
+    frecuencias: list[int] = None
+    decibelesDerecha : list[int]

@@ -19,14 +19,14 @@ class PersonData(BaseModel):
     role: str = None
     birth_date: date = None
     class Config:
-        from_attributes = True
-    class Example:
-        example = {
-            "cedula": "123456789",
-            "name": "John Doe",
-            "email": "",
-            "role": "admin",
-            "birth_date": "1990-01-01"
+        schema_extra = {
+            "example": {
+                "cedula": "123456789",
+                "name": "Juan Pérez",
+                "email": "juan@example.com",
+                "role": "Paciente",
+                "birth_date": "1990-05-20"
+            }
         }
 
 
@@ -65,5 +65,18 @@ class UserOut(BaseModel):
     ocupation: str = None   
     person: PersonData = None   
     class Config:
-        from_attributes = True
+        schema_extra = {
+            "example": {
+                "id": 1,
+                "username": "juanperez",
+                "ocupation": "Estudiante",
+                "person": {
+                    "cedula": "123456789",
+                    "name": "Juan Pérez",
+                    "email": "juan@example.com",
+                    "role": "Paciente",
+                    "birth_date": "1990-05-20"
+                }
+            }
+        }
     
