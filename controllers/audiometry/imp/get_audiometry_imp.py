@@ -122,7 +122,7 @@ class GetAudiometryControllerImp(GetAudiometryController):
             ear_level_right =self.get_ear_lever_controller.get_ear_level(audiometri_shema_right,self.get_ear_lever_controller.getAge(userid))
 
             return [left_ear_decibel, right_ear_decibel, ear_frequency,ear_level ,[ear_level_left ,ear_level_right]]
-        
+
         except Exception as e:
             self.db.rollback()
             raise HTTPException(
