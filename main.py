@@ -15,7 +15,7 @@ app = FastAPI(
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Cambia esto si usas dominios específicos
+    allow_origins=["https://audicheck.cogra.com.co"],  # Cambia esto si usas dominios específicos
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
