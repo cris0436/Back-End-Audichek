@@ -2,6 +2,11 @@ from models.entities.Frecuency import Frecuency
 from models.entities.Decibel import Decibel
 from controllers.audiometry.imp.get_frecuency_imp import GetFrequencyControllerImp
 from controllers.audiometry.imp.get_decibel_imp import GetDecibelControllerImp
+from controllers.audiometry.imp.get_ear_lever_imp import GetEarLeverImp
+from models.entities.AudiometryResults import AudiometryResults
+from models.entities.Frecuency import Frecuency
+from models.entities.Decibel import Decibel
+from schemas.Audiometry import Audiometry, DecibelFrequency
 
 import pytest
 from fastapi import HTTPException, status, Depends
@@ -266,12 +271,6 @@ def test_get_decibel_creates_new(db_session):
     assert db_obj.value == 80.0
 
 def test_get_ear_level_100(db_session):
-    from controllers.audiometry.imp.get_ear_lever_imp import GetEarLeverImp
-    from models.entities.AudiometryResults import AudiometryResults
-    from models.entities.Frecuency import Frecuency
-    from models.entities.Decibel import Decibel
-    from schemas.Audiometry import Audiometry, DecibelFrequency
-
     # Arrange
     controller = GetEarLeverImp(db_session)
     audiometry_data = Audiometry(
@@ -290,12 +289,6 @@ def test_get_ear_level_100(db_session):
 
 
 def test_get_ear_level_no_100(db_session):
-    from controllers.audiometry.imp.get_ear_lever_imp import GetEarLeverImp
-    from models.entities.AudiometryResults import AudiometryResults
-    from models.entities.Frecuency import Frecuency
-    from models.entities.Decibel import Decibel
-    from schemas.Audiometry import Audiometry, DecibelFrequency
-
     # Arrange
     controller = GetEarLeverImp(db_session)
     audiometry_data = Audiometry(
